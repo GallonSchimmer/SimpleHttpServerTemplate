@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe List</title>
+    <link rel="stylesheet" type="text/css" href="resources/static/style.css">
+
+	<!--style>
+	/* Reset default margin and padding */
+body, h1, h2, form {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set the background color and font styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Style the header */
+h1 {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style the recipe list */
+#recipeList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#recipeList li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the "Add New Recipe" form */
+#addRecipeForm {
+    width: 300px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+#addRecipeForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#addRecipeForm input[type="text"],
+#addRecipeForm textarea {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+#addRecipeForm button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#addRecipeForm button:hover {
+    background-color: #0056b3;
+}
+
+</style-->
+    
+</head>
+<body>
+    <h1>Recipes</h1>
+    <ul id="recipeList"></ul>
+
+    <!-- Add a button to get recipes -->
+    <button id="getRecipesButton">Get Recipes</button>
+
+    <h2>Add New Recipe</h2>
+    <form id="addRecipeForm" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        <br>
+        <button type="submit">Add Recipe</button>
+    </form>
+
+    <script>
+    // Function to fetch and display recipes
+    function getRecipes() {
+        const timestamp = new Date().getTime(); // Get the current timestamp
+        const url = '/recipes' + '?timestamp=' + timestamp; // Append cache-busting parameter
+        fetch(url, { cache: 'no-store' }) // Set cache option to 'no-store'
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                console.log('Response Data:', data); // Log the JSON data in the console
+                const recipeList = document.getElementById('recipeList');
+                recipeList.innerHTML = ''; // Clear the existing recipe list
+
+                // Loop through the data and create list items for each recipe
+                data.forEach(recipe => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${recipe.name}: ${recipe.description}`;
+                    recipeList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Attach event listener to the "Get Recipes" button
+    const getRecipesButton = document.getElementById('getRecipesButton');
+    getRecipesButton.addEventListener('click', getRecipes);
+
+    // Script to add new recipe to the server
+    const addRecipeForm = document.getElementById('addRecipeForm');
+    addRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+
+        // Get the form data
+        const formData = new FormData(addRecipeForm);
+        const name = formData.get('name');
+        const description = formData.get('description');
+
+        // Create a JSON object with the recipe data
+        const newRecipe = {
+            name: name,
+            description: description,
+        };
+
+        // Send the new recipe to the server
+        fetch('/addRecipe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newRecipe),
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Log the server response (optional)
+            console.log('Server Response:', data);
+
+            // Fetch and display the updated recipes list
+            getRecipes();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+
+</body>
+</html>
