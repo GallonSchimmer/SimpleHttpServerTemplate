@@ -63,6 +63,7 @@ INSERT INTO recipes (name, description)
 VALUES ('German Potato Pancakes', 'These hearty, crispy fried potato pancakes are simple to make and delicious to eat! They can be served with a sweet, apple sauce, a savory garlic sauce, or a classic creamy quark!');
 
 #Html
+WebPage example:
 ![image](https://github.com/GallonSchimmer/SimpleHttpServerTemplate/assets/26065891/d8a4007c-5d5e-43ab-b381-8f5245b60809)
 
 #URL
