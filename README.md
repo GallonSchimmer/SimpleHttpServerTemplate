@@ -11,6 +11,7 @@ This application serves as a basic HTTP server, providing functionalities for se
 - Java
 - Eclipse IDE
 - MySQL
+  
 ![image](https://github.com/GallonSchimmer/SimpleHttpServerTemplate/assets/26065891/7f8c3c7b-25fc-43df-8bdb-56ecc3732068)
 
 ## Getting Started
@@ -22,6 +23,8 @@ To get started with this project, you can follow these steps:
 3. Configure the MySQL database with the necessary tables for managing recipes.
 4. Run the `SimpleHttpServer` class to start the HTTP server.
 5. Use a web browser or a tool like `curl` to send HTTP requests to the server.
+
+
 
 ## Classes
 
@@ -42,6 +45,28 @@ The `RecipeService` class interacts with the MySQL database to manage recipes. I
 The project includes a simple HTML frontend for displaying and adding recipes. The `index.html` file fetches and displays recipes from the server and allows users to add new recipes.
 
 Feel free to explore this project and experiment with the HTTP server and recipe management functionalities. You can enhance the project by adding more features, improving error handling, and implementing additional CRUD operations for recipes.
+
+# MySQL for Testing
+CREATE DATABASE recipesDatabase; 
+USE recipesDatabase;
+
+CREATE TABLE recipes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL
+);
+
+show tables;
+select * from recipes;
+
+INSERT INTO recipes (name, description)
+VALUES ('German Potato Pancakes', 'These hearty, crispy fried potato pancakes are simple to make and delicious to eat! They can be served with a sweet, apple sauce, a savory garlic sauce, or a classic creamy quark!');
+
+#Html
+![image](https://github.com/GallonSchimmer/SimpleHttpServerTemplate/assets/26065891/d8a4007c-5d5e-43ab-b381-8f5245b60809)
+
+#URL
+http://localhost:8004/
 
 ## Contributors
 
